@@ -9,6 +9,7 @@ const Footer = () => {
           <a
             className="text-white"
             target="_blank"
+            rel="noopener noreferrer"
             href="https://pepdbm7.github.io/portfolio"
           >
             {" "}

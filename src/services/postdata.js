@@ -1,8 +1,10 @@
 export const PostData = async (type, userData) => {
-  let BaseURL = "http://localhost/react-php/api/index.php";
+  debugger;
+  let BaseURL =
+    "http://localhost/react/1st%20project/1st-project/backend/api/index.php";
 
   try {
-    const sendData = await fetch(BaseURL + "?tp=" + type, {
+    const sendData = await fetch(BaseURL + "?type=" + type, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -11,7 +13,9 @@ export const PostData = async (type, userData) => {
       body: JSON.stringify(userData)
     });
 
-    await sendData.json();
+    const jsonData = await sendData.json();
+    debugger;
+    return jsonData;
   } catch (err) {
     console.log(err);
     throw new Error(err);

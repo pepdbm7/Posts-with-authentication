@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import { confirmAlert } from "react-confirm-alert";
 import { PostData } from "../services/postdata";
-//import UserFeed from "./UserFeed";
+import UserFeed from "./UserFeed";
+import { confirmAlert } from "react-confirm-alert";
+
 class Home extends Component {
   state = {
     data: [],
@@ -12,26 +13,10 @@ class Home extends Component {
   };
 
   componentWillMount() {
-    if (sessionStorage.getItem("userData")) this.getUserFeed();
-    else this.setState({ redirectToReferrer: true });
-  }
-
-  onChange(e) {
-    this.setState({ userFeed: e.target.value });
-  }
-
-  getUserFeed() {
-    let data = JSON.parse(sessionStorage.getItem("userData"));
-    this.setState({ name: data.userData.name });
-    let postData = { user_id: data.userData.user_id };
-    if (data) {
-      PostData("feed", postData).then(result => {
-        let responseJson = result;
-        if (responseJson.feedData) {
-          this.setState({ data: responseJson.feedData });
-          console.log(this.state);
-        }
-      });
+    if (sessionStorage.getItem("userData")) {
+      this.getUserFeed();
+    } else {
+      this.setState({ redirectToReferrer: true });
     }
   }
 
@@ -43,12 +28,10 @@ class Home extends Component {
       feed: this.state.userFeed
     };
     if (this.state.userFeed) {
-      PostData("feedUpdate", postData)
-        .then(result => {
-          let responseJson = result;
-          this.setState({ data: responseJson.feedData });
-        })
-        .catch(err => console.log(err));
+      PostData("feedUpdate", postData).then(result => {
+        let responseJson = result;
+        this.setState({ data: responseJson.feedData });
+      });
     }
   }
 
@@ -62,7 +45,8 @@ class Home extends Component {
           onClick: () => this.deleteFeedAction(e)
         },
         {
-          label: "No"
+          label: "No",
+          onClick: () => alert("Click No")
         }
       ]
     });
@@ -70,19 +54,47 @@ class Home extends Component {
 
   deleteFeedAction(e) {
     let updateIndex = e.target.getAttribute("value");
+
     let feed_id = document.getElementById("del").getAttribute("data");
+
     let data = JSON.parse(sessionStorage.getItem("userData"));
+
     let postData = { user_id: data.userData.user_id, feed_id: feed_id };
     if (postData) {
       PostData("feedDelete", postData).then(result => {
         this.state.data.splice(updateIndex, 1);
         this.setState({ data: this.state.data });
+
         if (result.success) {
           alert(result.success);
         } else alert(result.error);
       });
     }
   }
+
+  editFeed(e) {
+    alert("j");
+  }
+
+  getUserFeed() {
+    let data = JSON.parse(sessionStorage.getItem("userData"));
+    this.setState({ name: data.userData.name });
+    let postData = { user_id: data.userData.user_id };
+
+    if (data) {
+      PostData("feed", postData).then(result => {
+        let responseJson = result;
+        if (responseJson.feedData) {
+          this.setState({ data: responseJson.feedData });
+          console.log(this.state);
+        }
+      });
+    }
+  }
+
+  onChange = e => {
+    this.setState({ userFeed: e.target.value });
+  };
 
   logout() {
     sessionStorage.setItem("userData", "");
@@ -96,9 +108,9 @@ class Home extends Component {
     }
 
     return (
-      <div className="row" id="Body">
-        <div className="medium-12 columns">
-          <a href="#" onClick={this.logout} className="logout">
+      <div className="">
+        <div className="">
+          <a href="#" onClick={this.logout} className="btn btn-light">
             Logout
           </a>
           <form onSubmit={this.feedUpdate} method="post">
@@ -112,13 +124,19 @@ class Home extends Component {
             <input
               type="submit"
               value="Post"
-              className="btn btn-warning"
+              className="btn btn-success"
               onClick={this.feedUpdate}
             />
           </form>
         </div>
+        <UserFeed
+          feedData={this.state.data}
+          deleteFeed={this.deleteFeed}
+          name={this.state.name}
+        />
       </div>
     );
   }
 }
+
 export default Home;

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Redirect } from "react-router-dom";
 import { PostData } from "../services/postdata";
+
 class Login extends Component {
   state = {
     username: "",
@@ -22,9 +23,9 @@ class Login extends Component {
     }
   }
 
-  onChange(e) {
+  onChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
   render() {
     if (this.state.redirectToReferrer) {
@@ -37,14 +38,14 @@ class Login extends Component {
       <Fragment>
         <form>
           <h4>Login</h4>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="text"
               name="username"
               placeholder="Username"
               onChange={this.onChange}
             />
-            <div class="form-group" />
+            <div className="form-group" />
 
             <input
               type="password"
@@ -53,7 +54,7 @@ class Login extends Component {
               onChange={this.onChange}
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="submit"
               className="btn btn-success mr-3"

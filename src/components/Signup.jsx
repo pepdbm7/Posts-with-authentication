@@ -29,9 +29,10 @@ class Signup extends Component {
     }
   }
 
-  onChange(e) {
+  onChange = e => {
+    console.log({ [e.target.name]: e.target.value });
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
   render() {
     if (this.state.redirectToReferrer || sessionStorage.getItem("userData")) {
@@ -42,7 +43,7 @@ class Signup extends Component {
       <Fragment>
         <form>
           <h4>Signup</h4>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="text"
               name="email"
@@ -50,7 +51,7 @@ class Signup extends Component {
               onChange={this.onChange}
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="text"
               name="name"
@@ -58,7 +59,7 @@ class Signup extends Component {
               onChange={this.onChange}
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="text"
               name="username"
@@ -66,7 +67,7 @@ class Signup extends Component {
               onChange={this.onChange}
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="password"
               name="password"
@@ -74,7 +75,7 @@ class Signup extends Component {
               onChange={this.onChange}
             />
           </div>
-          <div class="form-group">
+          <div className="form-group">
             <input
               type="submit"
               className="btn btn-success mr-3"
